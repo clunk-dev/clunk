@@ -116,6 +116,7 @@ export function Header() {
             {MAIN_LINKS.map((l) => (
               <Link key={l.to} to={l.to}>{l.label}</Link>
             ))}
+            <a href="https://github.com/clunk-dev/clunk" target="_blank" rel="noopener noreferrer">GitHub</a>
           </nav>
           <div className="header-actions">
             <span className="hide-md"><XButton /></span>
@@ -157,6 +158,7 @@ export function Header() {
               {MAIN_LINKS.map((l) => (
                 <li key={l.to}><Link to={l.to}>{l.label}</Link></li>
               ))}
+              <li><a href="https://github.com/clunk-dev/clunk" target="_blank" rel="noopener noreferrer">GitHub</a></li>
             </ul>
             {experimentGroups.map((g) => (
               <div key={g.group}>
