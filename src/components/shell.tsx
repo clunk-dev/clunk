@@ -24,8 +24,8 @@ function Caret() {
 
 function XIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M4 4 L20 20 M20 4 L4 20" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" />
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.637 7.584H.474l8.6-9.835L0 1.154h7.594l5.243 6.932 6.064-6.933Zm-1.29 19.49h2.039L6.487 3.24H4.3l13.312 17.403Z" />
     </svg>
   );
 }
@@ -36,6 +36,17 @@ export function XButton() {
   return (
     <a className="btn btn--sm icon-btn" href={launch.xUrl} target="_blank" rel="noopener noreferrer" aria-label="Clunk on X (opens in a new tab)">
       <XIcon />
+    </a>
+  );
+}
+
+function TelegramButton() {
+  if (!launch.telegramUrl) return null;
+  return (
+    <a className="btn btn--sm icon-btn" href={launch.telegramUrl} target="_blank" rel="noopener noreferrer" aria-label="Clunk on Telegram (opens in a new tab)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M21.543 3.498c.322-.14.693.168.577.715l-3.47 16.354c-.103.482-.391.6-.79.373l-5.287-3.899-2.551 2.456c-.282.282-.52.52-1.067.52l.376-5.379 9.789-8.844c.426-.376-.093-.586-.66-.21L6.354 13.2 1.14 11.57c-.48-.15-.49-.48.1-.71L21.543 3.498Z" />
+      </svg>
     </a>
   );
 }
@@ -108,6 +119,7 @@ export function Header() {
           </nav>
           <div className="header-actions">
             <span className="hide-md"><XButton /></span>
+            <span className="hide-md"><TelegramButton /></span>
             <span className="hide-md"><MotionToggle /></span>
             <WalletButton />
             <button type="button" className="btn btn--sm nav-toggle" aria-expanded={mobile} aria-controls="mobile-nav" onClick={() => setMobile((m) => !m)}>
@@ -160,6 +172,7 @@ export function Header() {
               <MotionToggle />
               <SoundToggle />
               <XButton />
+              <TelegramButton />
             </div>
           </div>
         </nav>

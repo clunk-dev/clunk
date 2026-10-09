@@ -11,6 +11,7 @@ export interface LaunchConfig {
   contractAddress: string | null; // OD-02
   chain: { name: string; chainId: number | null; explorerUrl: string | null }; // OD-03
   xUrl: string | null; // REQ-25
+  telegramUrl: string | null;
   /** Public site URL (https://…). Used for "Open in wallet app" links on phones. */
   siteUrl: string | null;
   buyUrl: string | null;
@@ -36,7 +37,8 @@ export const launch: LaunchConfig = {
   tickerConfirmed: false,
   contractAddress: null,
   chain: { name: 'Robinhood Chain', chainId: null, explorerUrl: null },
-  xUrl: null,
+  xUrl: 'https://x.com/Contractclunk',
+  telegramUrl: 'https://t.me/Clunk_AI',
   siteUrl: 'https://clunk.lat',
   buyUrl: null,
   chartUrl: null,
