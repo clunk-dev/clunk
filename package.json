@@ -1,0 +1,39 @@
+{
+  "name": "clunk",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Clunk: token mechanisms, backed NFT identities, and connected applications.",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "build:preview": "node scripts/build.mjs --router=hash --out=dist-preview --fragment --inline",
+    "build:single": "node scripts/build.mjs --router=hash --out=dist-single --inline",
+    "build:hash": "node scripts/build.mjs --router=hash --out=dist-hash",
+    "serve": "node scripts/serve.mjs dist 4173",
+    "test": "node --import tsx --test tests/unit/*.test.ts",
+    "typecheck": "tsc -p tsconfig.json",
+    "contracts:compile": "node scripts/contracts/compile.mjs",
+    "contracts:test": "node --test tests/contracts/*.test.mjs",
+    "contracts:prepare": "node scripts/contracts/prepare-deployment.mjs",
+    "test:nft-ui": "node --import tsx --test tests/ui/*.test.tsx",
+    "check:integrity": "node scripts/ci/integrity.mjs",
+    "test:reveal": "node --test tests/server/*.test.mjs"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.4.0",
+    "ethers": "^6.16.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^16.3.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.3.0",
+    "esbuild": "^0.25.0",
+    "ganache": "^7.9.2",
+    "jsdom": "^26.1.0",
+    "solc": "^0.8.30",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0"
+  }
+}

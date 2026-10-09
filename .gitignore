@@ -1,0 +1,14 @@
+node_modules
+node_modules/
+dist/
+dist-*/
+artifacts/
+.sites-runtime/
+.openai/
+.env
+.env.*
+!.env.example
+private/
+deployment-output/
+contracts/launch.local.json
+*.log

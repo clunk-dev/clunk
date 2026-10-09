@@ -1,0 +1,240 @@
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { launch } from '../config/launch';
+import { experimentGroups } from '../routes-meta';
+import { Link, usePath } from '../lib/router';
+import { copyText, prefs, setMotion, setSound, useStore } from '../lib/runtime';
+import { ClunkMark, Wordmark } from './brand';
+import { useDismiss } from './ui';
+import { WalletButton } from './wallet';
+import { TxButton } from './tx';
+
+const MAIN_LINKS = [
+  { to: '/hooks', label: 'Hooks' },
+  { to: '/how-it-works', label: 'How it works' },
+  { to: '/docs', label: 'Whitepaper' },
+];
+
+function Caret() {
+  return (
+    <svg className="nav__caret" viewBox="0 0 10 10" aria-hidden="true">
+      <path d="M1 3 L5 7 L9 3" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function XIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M4 4 L20 20 M20 4 L4 20" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+/** X link appears only once a verified account is configured (REQ-25: never an invented account). */
+export function XButton() {
+  if (!launch.xUrl) return null;
+  return (
+    <a className="btn btn--sm icon-btn" href={launch.xUrl} target="_blank" rel="noopener noreferrer" aria-label="Clunk on X (opens in a new tab)">
+      <XIcon />
+    </a>
+  );
+}
+
+export function MotionToggle({ compact = false }: { compact?: boolean }) {
+  const p = useStore(prefs);
+  const on = p.motion === 'on';
+  return (
+    <button type="button" className="btn btn--sm" aria-pressed={!on} onClick={() => setMotion(on ? 'off' : 'on')} title={on ? 'Turn decorative motion off' : 'Turn decorative motion on'}>
+      {compact ? (on ? 'Motion on' : 'Motion off') : on ? 'Motion: on' : 'Motion: off'}
+    </button>
+  );
+}
+
+export function SoundToggle() {
+  const p = useStore(prefs);
+  return (
+    <button type="button" className="btn btn--sm" aria-pressed={p.sound} onClick={() => setSound(!p.sound)} title="Sound is only used in Rising Tide">
+      {p.sound ? 'Sound: on' : 'Sound: off'}
+    </button>
+  );
+}
+
+export function Header() {
+  const path = usePath();
+  const [menu, setMenu] = useState(false);
+  const [mobile, setMobile] = useState(false);
+  const closeMenu = useCallback(() => setMenu(false), []);
+  const menuRef = useDismiss(menu, closeMenu);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    setMenu(false);
+    setMobile(false);
+  }, [path]);
+
+  useEffect(() => {
+    if (!mobile) return;
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setMobile(false);
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [mobile]);
+
+  const inExperiments = experimentGroups.some((g) => g.items.some((i) => i.path === path));
+
+  return (
+    <header className="site-header">
+      <div ref={menuRef}>
+        <div className="container site-header__inner">
+          <Link to="/" className="brand" aria-label="Clunk home">
+            <ClunkMark />
+            <Wordmark />
+          </Link>
+          <nav className="nav" aria-label="Main">
+            <Link to="/">Home</Link>
+            <button
+              ref={triggerRef}
+              type="button"
+              className="nav__trigger"
+              aria-expanded={menu}
+              aria-controls="experiments-menu"
+              onClick={() => setMenu((m) => !m)}
+              style={inExperiments ? { boxShadow: 'inset 0 -3px 0 var(--cobalt)' } : undefined}
+            >
+              Experiments <Caret />
+            </button>
+            {MAIN_LINKS.map((l) => (
+              <Link key={l.to} to={l.to}>{l.label}</Link>
+            ))}
+          </nav>
+          <div className="header-actions">
+            <span className="hide-md"><XButton /></span>
+            <span className="hide-md"><MotionToggle /></span>
+            <WalletButton />
+            <button type="button" className="btn btn--sm nav-toggle" aria-expanded={mobile} aria-controls="mobile-nav" onClick={() => setMobile((m) => !m)}>
+              {mobile ? 'Close' : 'Menu'}
+            </button>
+          </div>
+        </div>
+        {menu && (
+          <div className="menu-panel" id="experiments-menu">
+            <div className="container menu-panel__grid">
+              {experimentGroups.map((g) => (
+                <div className="menu-panel__group" key={g.group}>
+                  <h2>{g.group}</h2>
+                  <ul>
+                    {g.items.map((i) => (
+                      <li key={i.path}>
+                        <Link to={i.path}>
+                          <strong>{i.title}</strong>
+                          <span>{i.short}</span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+      {mobile && (
+        <nav className="mobile-nav" id="mobile-nav" aria-label="Mobile">
+          <div className="container mobile-nav__inner">
+            <ul>
+              <li><Link to="/">Home</Link></li>
+              {MAIN_LINKS.map((l) => (
+                <li key={l.to}><Link to={l.to}>{l.label}</Link></li>
+              ))}
+            </ul>
+            {experimentGroups.map((g) => (
+              <div key={g.group}>
+                <h2>{g.group}</h2>
+                <ul>
+                  {g.items.map((i) => (
+                    <li key={i.path}><Link to={i.path}>{i.title}</Link></li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+            <div className="mobile-nav__prefs">
+              <MotionToggle />
+              <SoundToggle />
+              <XButton />
+            </div>
+          </div>
+        </nav>
+      )}
+    </header>
+  );
+}
+
+/** REQ-20: contract address, copy, buy and chart come from the launch config. Before an address is set,
+ * the Buy button goes through the wallet-gated launch flow instead. */
+export function CAField({ showLinks = true }: { showLinks?: boolean }) {
+  const ca = launch.contractAddress;
+  const [copied, setCopied] = useState<'ok' | 'fail' | null>(null);
+  if (!ca) {
+    return showLinks ? (
+      <div className="ca">
+        <TxButton action={`Buy ${launch.ticker}`} className="btn btn--sm btn--primary">Buy {launch.ticker}</TxButton>
+      </div>
+    ) : null;
+  }
+  return (
+    <div className="ca">
+      <span className="ca__label">Contract address · {launch.ticker}</span>
+      <span className="ca__value">{ca}</span>
+      <button type="button" className="btn btn--sm" onClick={async () => setCopied((await copyText(ca)) ? 'ok' : 'fail')}>
+        {copied === 'ok' ? 'Copied' : 'Copy'}
+      </button>
+      {copied === 'fail' && <span className="note">Select the address and copy it manually.</span>}
+      {showLinks && (launch.buyUrl ? (
+        <a className="btn btn--sm btn--primary" href={launch.buyUrl} target="_blank" rel="noopener noreferrer">Buy {launch.ticker}</a>
+      ) : (
+        <TxButton action={`Buy ${launch.ticker}`} className="btn btn--sm btn--primary">Buy {launch.ticker}</TxButton>
+      ))}
+      {showLinks && launch.chartUrl && (
+        <a className="btn btn--sm" href={launch.chartUrl} target="_blank" rel="noopener noreferrer">Chart</a>
+      )}
+    </div>
+  );
+}
+
+export function Footer() {
+  const live = !!launch.contractAddress;
+  return (
+    <footer className="site-footer">
+      <div className="container">
+        <div className="footer-grid">
+          <div className="footer-risk">
+            <h2>Risks</h2>
+            <p>
+              Clunk is an experimental crypto project{live ? '' : `; its contracts are not yet deployed on ${launch.chain.name}`}. Figures marked Example are illustrative. Smart contracts can fail, prices can move sharply and you can lose money. Burns, buybacks and liquidity additions don’t guarantee returns.
+            </p>
+          </div>
+          <div>
+            <h2>Explore</h2>
+            <ul className="stack" style={{ ['--gap' as string]: '6px' }}>
+              <li><Link to="/hooks">Hooks</Link></li>
+              <li><Link to="/how-it-works">How it works</Link></li>
+              <li><Link to="/how-it-works" anchor="faq">FAQ</Link></li>
+              <li><Link to="/notebook">Notebook</Link></li>
+              <li><Link to="/docs">Whitepaper</Link></li>
+            </ul>
+          </div>
+          <div className="stack" style={{ ['--gap' as string]: '14px' }}>
+            <h2>{launch.ticker}</h2>
+            {live ? <CAField showLinks={false} /> : null}
+            <p className="note">Network: {launch.chain.name}</p>
+            <p className="note">The official contract address is only ever published on this site.</p>
+            <XButton />
+          </div>
+        </div>
+        <div className="footer-base">
+          <span>One token. Plenty of ideas.</span>
+          <span className="mono">Whitepaper v{launch.whitepaper.version}</span>
+        </div>
+      </div>
+    </footer>
+  );
+}

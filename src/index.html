@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en" data-motion="on">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Clunk: one token, plenty of ideas</title>
+    <meta name="description" content="Clunk is a proposed AI-guided token experiment for Robinhood Chain. Try every mechanism as a labeled simulation, no wallet needed." />
+    <meta name="theme-color" content="#F3EBDD" />
+    <meta property="og:title" content="Clunk: one token, plenty of ideas" />
+    <meta property="og:description" content="A proposed token experiment. Every mechanism on this site is a labeled simulation." />
+    <link rel="icon" href="%BASE%brand/clunk-token-cobalt.svg" type="image/svg+xml" />
+    <link rel="icon" href="%BASE%brand/clunk-token-cobalt-32.png" sizes="32x32" type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" />
+    <link rel="stylesheet" href="%BASE%assets/app.css" />
+    <script>
+      try {
+        var m = localStorage.getItem('clunk.motion');
+        if (m !== 'on' && m !== 'off') m = matchMedia('(prefers-reduced-motion: reduce)').matches ? 'off' : 'on';
+        document.documentElement.setAttribute('data-motion', m);
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root">
+      <div style="padding: 48px 16px; text-align: center; font-family: system-ui, sans-serif; color: #252522; background: #f3ebdd;">
+        <p><strong>Clunk</strong> is loading.</p>
+        <noscript><p>This site needs JavaScript to run its simulations. The whitepaper is available at the source link in the project documentation.</p></noscript>
+      </div>
+    </div>
+    <script type="module" src="%BASE%assets/app.js"></script>
+  </body>
+</html>

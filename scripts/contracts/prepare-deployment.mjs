@@ -1,0 +1,22 @@
+// Produces unsigned deployment and activation transactions. Never reads private keys or broadcasts.
+import {readFileSync,writeFileSync,mkdirSync} from 'node:fs';
+import {JsonRpcProvider,Contract,ContractFactory,Interface,isAddress,ZeroAddress} from 'ethers';
+const path=process.argv[2];
+if(!path) throw new Error('Usage: node scripts/contracts/prepare-deployment.mjs path/to/launch.json');
+const cfg=JSON.parse(readFileSync(path,'utf8'));
+for(const key of ['tokenAddress','administrator','deployer']) if(!isAddress(cfg[key])||cfg[key]===ZeroAddress) throw new Error(`Set ${key} to a nonzero address.`);
+if(!Number.isSafeInteger(cfg.chainId)||cfg.chainId<=0||!/^https:\/\//.test(cfg.rpcUrl)||!/^https:\/\/.+\/nft\/metadata\/$/.test(cfg.metadataBaseURI))throw new Error('Set a verified chainId, HTTPS RPC and mint-gated HTTPS metadata URI ending in /nft/metadata/.');
+const provider=new JsonRpcProvider(cfg.rpcUrl);
+const network=await provider.getNetwork();
+if(network.chainId!==BigInt(cfg.chainId))throw new Error('RPC chain does not match configuration.');
+if(await provider.getCode(cfg.tokenAddress)==='0x')throw new Error('No token contract at this address.');
+const token=new Contract(cfg.tokenAddress,['function decimals() view returns(uint8)','function symbol() view returns(string)'],provider);
+const decimals=Number(await token.decimals());if(decimals>36)throw new Error('Unsupported token decimals.');
+const artifact=JSON.parse(readFileSync('artifacts/contracts/ClunkVault.json','utf8'));
+const factory=new ContractFactory(artifact.abi,artifact.evm.bytecode.object);
+const tx=await factory.getDeployTransaction(cfg.tokenAddress,cfg.administrator,cfg.metadataBaseURI);
+mkdirSync('deployment-output',{recursive:true});
+writeFileSync('deployment-output/unsigned-deployment.json',JSON.stringify({chainId:cfg.chainId,from:cfg.deployer,data:tx.data,value:'0x0',notes:'Unsigned. Review contract and constructor arguments before signing. Vault deploys with minting closed.'},null,2));
+writeFileSync('deployment-output/verified-inputs.json',JSON.stringify({...cfg,tokenDecimals:decimals,backingAmount:(50000n*10n**BigInt(decimals)).toString(),compiler:artifact.compiler},null,2));
+writeFileSync('deployment-output/activation-template.json',JSON.stringify({chainId:cfg.chainId,from:cfg.administrator,to:'REPLACE_WITH_DEPLOYED_VAULT_ADDRESS',data:new Interface(artifact.abi).encodeFunctionData('setMintOpen',[true]),value:'0x0',notes:'Sign only after deployment verification and final launch checks.'},null,2));
+provider.destroy();console.log('Prepared unsigned deployment and activation transactions in deployment-output/. Nothing broadcast.');

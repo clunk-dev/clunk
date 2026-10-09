@@ -1,0 +1,8 @@
+[
+  {"trait":"Scene","label":"Little worlds","examples":["Observatory","Greenhouse","Record room"]},
+  {"trait":"Body","label":"Character colors","examples":["Cobalt","Terracotta","Sage"]},
+  {"trait":"Wardrobe","label":"Everyday uniforms","examples":["Studio overalls","Lab coat","Cable knit"]},
+  {"trait":"Accessory","label":"Pocket companions","examples":["Coffee cup","Folded map","Pocket notebook"]},
+  {"trait":"Crown tab","label":"A signature detail","examples":["Star","Stitched","Stripe"]},
+  {"trait":"Paper wash","label":"Notebook tones","examples":["Blue grey","Clay paper","Sage paper"]}
+]
