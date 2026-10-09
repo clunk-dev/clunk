@@ -35,7 +35,7 @@ export const launch: LaunchConfig = {
   name: 'Clunk',
   ticker: '$CLUNK',
   tickerConfirmed: false,
-  contractAddress: null,
+  contractAddress: '0xefc0b4f1d45c441146b8c1c3288733566c1de4ea',
   chain: { name: 'Robinhood Chain', chainId: null, explorerUrl: null },
   xUrl: 'https://x.com/Contractclunk',
   telegramUrl: 'https://t.me/Clunk_AI',

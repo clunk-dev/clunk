@@ -80,6 +80,22 @@ export function SoundToggle() {
   );
 }
 
+function NavbarCA() {
+  const ca = launch.contractAddress;
+  const [copied, setCopied] = useState(false);
+  if (!ca) return null;
+  return (
+    <button type="button" className="btn btn--sm navbar-ca" title={ca} aria-label={`Copy CLUNK contract address ${ca}`} onClick={async () => {
+      const ok = await copyText(ca);
+      setCopied(ok);
+      if (ok) window.setTimeout(() => setCopied(false), 2000);
+    }}>
+      <span className="mono">CA: {ca.slice(0, 6)}…{ca.slice(-4)}</span>
+      <span aria-live="polite">{copied ? 'Copied' : 'Copy'}</span>
+    </button>
+  );
+}
+
 export function Header() {
   const path = usePath();
   const [menu, setMenu] = useState(false);
@@ -128,6 +144,7 @@ export function Header() {
             ))}
           </nav>
           <div className="header-actions">
+            <span className="hide-md"><NavbarCA /></span>
             <span className="hide-md"><XButton /></span>
             <span className="hide-md"><TelegramButton /></span>
             <span className="hide-md"><GitHubButton /></span>
@@ -180,6 +197,7 @@ export function Header() {
               </div>
             ))}
             <div className="mobile-nav__prefs">
+              <NavbarCA />
               <MotionToggle />
               <SoundToggle />
               <XButton />
