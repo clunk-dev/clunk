@@ -1,4 +1,4 @@
-<p align="center"><a href="https://clunk.lat"><img src="public/brand/clunk-mascot-640.webp" width="480" alt="Clunk, the notebook tinkerer" /></a></p>
+<p align="center"><a href="https://clunk.lat"><img src="docs/assets/clunk-banner.webp" width="100%" alt="Clunk mascot in a cobalt notebook dreamscape" /></a></p>
 <h1 align="center">Clunk</h1>
 <p align="center"><strong>One token. Plenty of ideas.</strong></p>
 <p align="center">A curious character, backed NFT identities, and connected onchain mechanisms for Robinhood Chain.</p>
