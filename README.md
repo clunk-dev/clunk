@@ -4,6 +4,8 @@
 <p align="center">A curious character, backed NFT identities, and connected onchain mechanisms for Robinhood Chain.</p>
 <p align="center"><a href="https://clunk.lat">Open Clunk</a> · <a href="https://clunk.lat/hooks">Hooks</a> · <a href="https://clunk.lat/docs">Whitepaper</a> · <a href="docs/GETTING_STARTED.md">Get started</a> · <a href="docs/ARCHITECTURE.md">Architecture</a></p>
 
+<p align="center"><a href="https://github.com/clunk-dev/clunk/actions/workflows/types.yml"><img src="https://github.com/clunk-dev/clunk/actions/workflows/types.yml/badge.svg?branch=main" alt="TypeScript status" /></a> <a href="https://github.com/clunk-dev/clunk/actions/workflows/unit.yml"><img src="https://github.com/clunk-dev/clunk/actions/workflows/unit.yml/badge.svg?branch=main" alt="Unit tests status" /></a> <a href="https://github.com/clunk-dev/clunk/actions/workflows/interface.yml"><img src="https://github.com/clunk-dev/clunk/actions/workflows/interface.yml/badge.svg?branch=main" alt="Interface status" /></a> <a href="https://github.com/clunk-dev/clunk/actions/workflows/build.yml"><img src="https://github.com/clunk-dev/clunk/actions/workflows/build.yml/badge.svg?branch=main" alt="Build status" /></a> <a href="https://github.com/clunk-dev/clunk/actions/workflows/reveal.yml"><img src="https://github.com/clunk-dev/clunk/actions/workflows/reveal.yml/badge.svg?branch=main" alt="Reveal status" /></a> <a href="https://github.com/clunk-dev/clunk/actions/workflows/compile.yml"><img src="https://github.com/clunk-dev/clunk/actions/workflows/compile.yml/badge.svg?branch=main" alt="Solidity status" /></a> <a href="https://github.com/clunk-dev/clunk/actions/workflows/contracts.yml"><img src="https://github.com/clunk-dev/clunk/actions/workflows/contracts.yml/badge.svg?branch=main" alt="Vault status" /></a> <a href="https://github.com/clunk-dev/clunk/actions/workflows/integrity.yml"><img src="https://github.com/clunk-dev/clunk/actions/workflows/integrity.yml/badge.svg?branch=main" alt="Integrity status" /></a></p>
+
 Clunk explores how one token can support changing mechanisms and applications while keeping its address. This repository contains the website, deterministic economic calculators, a free climbing game, the prepared NFT vault contract, wallet integration, and the server-side reveal gate.
 
 ## Explore Clunk
@@ -68,7 +70,7 @@ Open `http://localhost:4173`. The server uses the same Worker and public asset s
 | Vault transactions | Local EVM mint, transfer, redemption, reserve and failure tests. |
 | Repository integrity | Public-file policy, routes, brand assets, ABI consistency and documentation links. |
 
-All workflows run on pushes to `main`, pull requests and manual dispatch. They use read-only repository permissions, timeouts and pinned GitHub Actions revisions. They do not deploy contracts or spend funds. GitHub badges and successful-run claims are added only after the repository exists and GitHub runs the checks. See [CI guide](docs/CI.md).
+All workflows run on pushes to `main`, pull requests and manual dispatch. They use read-only repository permissions, timeouts and pinned GitHub Actions revisions. They do not deploy contracts or spend funds. The badges report actual GitHub results for the current main branch. See [CI guide](docs/CI.md).
 
 ## Code map
 
